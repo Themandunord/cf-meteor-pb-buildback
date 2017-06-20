@@ -15,7 +15,7 @@ status() {
   echo "-----> $*"
 }
 
-node_version=$(curl --silent --get https://semver.io/node/resolve/4.4.x)
+node_version=$(curl --silent --get https://semver.io/node/resolve/4.8.2)
 
 install_node() {
 
@@ -29,6 +29,7 @@ install_node() {
   NODE_INSTALLER=node-installer.tar.gz
   NODE_URL="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
   curl $NODE_URL > $NODE_INSTALLER
+  status "tar xzf $NODE_INSTALLER -C $BUILD_DIR"
   tar xzf $NODE_INSTALLER -C $BUILD_DIR
 
   # Move node (and npm) into ./.vendor and make them executable
@@ -38,9 +39,44 @@ install_node() {
   PATH=$BUILD_DIR/.vendor/node/bin:$PATH
 }
 
+# install_yarn() {
+#   if [ -f "$PROJECT_DIR/.vendor/yarn/bin/yarn" ] ; then
+#     status "Skipping Yarn installation. Already installed."
+#     return
+#   fi
+#
+#   # Download yarn from yarn mirror
+#   status "Downloading and installing yarn $YARN_VERSION"
+#   YARN_INSTALLER="yarn-v$YARN_VERSION.tar.gz"
+#   YARN_URL="https://yarnpkg.com/downloads/$YARN_VERSION/$YARN_INSTALLER"
+#   local code=$(curl "$YARN_URL" -L --silent --fail --retry 5 --retry-max-time 15 -o /tmp/yarn.tar.gz --write-out "%{http_code}")
+#   if [ "$code" != "200" ]; then
+#     echo "Unable to download yarn: $code" && false
+#   fi
+#
+#   mkdir -p $PROJECT_DIR/yarn
+#
+#   if tar --version | grep -q 'gnu'; then
+#     tar xzf /tmp/yarn.tar.gz -C "$PROJECT_DIR/yarn" --strip 1 --warning=no-unknown-keyword
+#   else
+#     tar xzf /tmp/yarn.tar.gz -C "$PROJECT_DIR/yarn" --strip 1
+#   fi
+#
+#   # Move yarn into ./.vendor and make them executable
+#   mkdir -p $PROJECT_DIR/.vendor
+#   mv $PROJECT_DIR/yarn $PROJECT_DIR/.vendor/yarn
+#   chmod +x $PROJECT_DIR/.vendor/yarn/bin/*
+#   PATH=$PROJECT_DIR/.vendor/yarn/bin:$PATH
+#
+#   status "Installed yarn $(yarn --version)"
+# }
+
+
 build() {
   (
     cd $BUILD_DIR
+
+    status "tar -xzf *.tar.gz"
 
     tar -xzf *.tar.gz
     cd bundle/programs/server
