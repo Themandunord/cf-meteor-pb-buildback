@@ -24,7 +24,7 @@ meteor reset && meteor build ../builds/. --server-only --architecture os.linux.x
 ```
 And push it to bluemix
 ```
-cd /some/path/deploy
-cf push app_name -b https://github.com/tadasdanielius/cf-meteor-pb-buildback.git
+cd ../builds
+cf push app_name -b https://github.com/Themandunord/cf-meteor-pb-buildback.git
 ```
 
