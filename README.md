@@ -9,7 +9,7 @@ has limits in place on how many files can be uploaded. As such made
 [Cloud Foundary Community](https://www.cloudfoundry.org/) provided 
 [buildpack](https://github.com/cloudfoundry-community/cf-meteor-buildpack) became obsolete.
 
-## Locally compile and depoloy
+## Locally compile and deploy
 
 One of the possible ways to overcome this limitation is to build project locally upload 
 tarball to bluemix and setup the rest remotely, and this buildpack does exactly that.
@@ -19,6 +19,8 @@ Based on [Community buildback](https://github.com/cloudfoundry-community/cf-mete
 Simply build your app locally
 ```
 meteor build /some/path/deploy
+
+meteor reset && meteor build ../builds/. --server-only --architecture os.linux.x86_64
 ```
 And push it to bluemix
 ```
