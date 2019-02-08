@@ -15,7 +15,7 @@ status() {
   echo "-----> $*"
 }
 
-node_version=$(curl --silent --get https://semver.io/node/resolve/8.15.0)
+node_version=$(curl --silent --get https://semver.io/node/resolve/8.11.4)
 
 install_node() {
 
